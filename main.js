@@ -159,3 +159,9 @@ answerButton.onclick = async () => {
     });
   });
 };
+
+hangupButton.onclick = () =>  {
+  pc.close()
+  callButton.disabled = true
+  window.location.reload()
+}
