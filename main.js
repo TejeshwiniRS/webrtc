@@ -2,10 +2,19 @@ import './style.css';
 
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+//import WebRTCModule from react-native-webrtc;
 
 const firebaseConfig = {
-  // your config
+  // your configconst firebaseConfig = {
+  apiKey: "AIzaSyDO3LXMf9U1lrStkXMdIstwPcht0AZhkec",
+  authDomain: "videoconf-proto.firebaseapp.com",
+  databaseURL: "https://videoconf-proto-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "videoconf-proto",
+  storageBucket: "videoconf-proto.appspot.com",
+  messagingSenderId: "107524877047",
+  appId: "1:107524877047:web:445c00ecfb495cf932c1f2"
 };
+
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -38,12 +47,18 @@ const hangupButton = document.getElementById('hangupButton');
 // 1. Setup media sources
 
 webcamButton.onclick = async () => {
-  localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-  remoteStream = new MediaStream();
+  try{
+    localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    remoteStream = new MediaStream();
+  }
+  catch(e){
+    console.log("Perms denied")
+  
+  }
 
   // Push tracks from local stream to peer connection
   localStream.getTracks().forEach((track) => {
-    pc.addTrack(track, localStream);
+  pc.addTrack(track, localStream);
   });
 
   // Pull tracks from remote stream, add to video stream
