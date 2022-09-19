@@ -33,6 +33,7 @@ const servers = {
 // Global State
 const pc = new RTCPeerConnection(servers);
 let localStream = null;
+let localVideoStream = null;
 let remoteStream = null;
 
 // HTML elements
@@ -49,6 +50,7 @@ const hangupButton = document.getElementById('hangupButton');
 webcamButton.onclick = async () => {
   try{
     localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    localVideoStream = new MediaStream(localStream.getVideoTracks());
     remoteStream = new MediaStream();
   }
   catch(e){
@@ -68,7 +70,7 @@ webcamButton.onclick = async () => {
     });
   };
 
-  webcamVideo.srcObject = localStream;
+  webcamVideo.srcObject = localVideoStream;
   remoteVideo.srcObject = remoteStream;
 
   callButton.disabled = false;
