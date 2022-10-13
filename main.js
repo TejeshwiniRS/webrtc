@@ -58,6 +58,28 @@ webcamButton.onclick = async () => {
   
   }
 
+
+  try {
+    // audio context is established and a MediaStreamTrackAudioSourceNode is created
+    const audioCtx = new AudioContext();
+    const source = audioCtx.createMediaStreamSource(localStream);
+
+    // apply biquad filter to the audio source
+    const biquadFilter = audioCtx.createBiquadFilter();
+    biquadFilter.type = "lowshelf";
+    biquadFilter.frequency.value = 3000;
+    biquadFilter.gain.value = 20;
+
+    // connect the audio source to the biquad filter
+    source.connect(biquadFilter);
+    biquadFilter.connect(audioCtx.destination);
+    console.log('Base Latency'+audioCtx.baseLatency);
+    console.log('Output Latency'+audioCtx.outputLatency);
+  } catch (error) {
+    console.log(error);
+  }
+
+
   // Push tracks from local stream to peer connection
   localStream.getTracks().forEach((track) => {
   pc.addTrack(track, localStream);
